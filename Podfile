@@ -2,7 +2,7 @@
 # platform :ios, '9.0'
 
 target 'RAC_Study' do
-   use_frameworks!
-   pod 'ReactiveCocoa'
+   #use_frameworks!
+   pod 'ReactiveObjC'
 
 end

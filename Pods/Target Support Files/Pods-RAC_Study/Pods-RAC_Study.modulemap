@@ -1,4 +1,4 @@
-framework module Pods_RAC_Study {
+module Pods_RAC_Study {
   umbrella header "Pods-RAC_Study-umbrella.h"
 
   export *
