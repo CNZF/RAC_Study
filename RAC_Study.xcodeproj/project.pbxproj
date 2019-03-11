@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,7 @@
 		89500472223241FD0040CFA9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 89500471223241FD0040CFA9 /* main.m */; };
 		8950047C223241FD0040CFA9 /* RAC_StudyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8950047B223241FD0040CFA9 /* RAC_StudyTests.m */; };
 		89500487223241FD0040CFA9 /* RAC_StudyUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 89500486223241FD0040CFA9 /* RAC_StudyUITests.m */; };
+		89572C892236458B00505A8B /* ModuleBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 89572C882236458B00505A8B /* ModuleBViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		89500482223241FD0040CFA9 /* RAC_StudyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RAC_StudyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		89500486223241FD0040CFA9 /* RAC_StudyUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RAC_StudyUITests.m; sourceTree = "<group>"; };
 		89500488223241FD0040CFA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		89572C872236458B00505A8B /* ModuleBViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModuleBViewController.h; sourceTree = SOURCE_ROOT; };
+		89572C882236458B00505A8B /* ModuleBViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModuleBViewController.m; sourceTree = SOURCE_ROOT; };
 		D17CA2BAB3BECAF98F1AAE4B /* Pods-RAC_Study.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RAC_Study.debug.xcconfig"; path = "Target Support Files/Pods-RAC_Study/Pods-RAC_Study.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,6 +128,8 @@
 				8950046D223241FD0040CFA9 /* LaunchScreen.storyboard */,
 				89500470223241FD0040CFA9 /* Info.plist */,
 				89500471223241FD0040CFA9 /* main.m */,
+				89572C872236458B00505A8B /* ModuleBViewController.h */,
+				89572C882236458B00505A8B /* ModuleBViewController.m */,
 			);
 			path = RAC_Study;
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				89500467223241FC0040CFA9 /* ViewController.m in Sources */,
+				89572C892236458B00505A8B /* ModuleBViewController.m in Sources */,
 				89500472223241FD0040CFA9 /* main.m in Sources */,
 				89500464223241FC0040CFA9 /* AppDelegate.m in Sources */,
 			);
