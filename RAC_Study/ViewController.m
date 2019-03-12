@@ -9,8 +9,11 @@
 #import "ViewController.h"
 #import <ReactiveObjC.h>
 #import "ModuleBViewController.h"
+#import <RACReturnSignal.h>
 
 static  NSString * const fflabeltTextNotification = @"ff_Notification";
+
+
 
 @interface ViewController ()<UIActionSheetDelegate>
 
@@ -18,7 +21,6 @@ static  NSString * const fflabeltTextNotification = @"ff_Notification";
 @property (weak, nonatomic) IBOutlet UIButton *ffBtn;
 @property (weak, nonatomic) IBOutlet UILabel *fflabel;
 @property (weak, nonatomic) IBOutlet UITextField *ffField;
-
 
 
 @end
@@ -37,13 +39,16 @@ static  NSString * const fflabeltTextNotification = @"ff_Notification";
     }];
     [self presentViewController:module animated:YES completion:nil];
     
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [self createRACmap];
+    [self createRACflattenMap];
+    [self createRACreduce];
   
-    [self createRACDefine];
-    
 }
 
 #pragma mark --RAC绑定按钮事件
@@ -329,8 +334,56 @@ static  NSString * const fflabeltTextNotification = @"ff_Notification";
     RACTupleUnpack(NSString * str,NSNumber * value) = tuple;
     NSLog(@"--name: %@--- value:%@",str,value);
     
+}
+
+#pragma mark -- flattenMap
+- (void)createRACflattenMap
+{
+    //    flattenMap：映射，取到信号源的值，映射成一个新的信号，返回出去！！
+    //    开发中，如果信号发出的值是信号，映射就使用FlatternMap
+    RACSignal * signal = [_ffBtn rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [[[_ffField rac_textSignal] flattenMap:^__kindof RACSignal * _Nullable(NSString * _Nullable value) {
+        
+        value = [NSString stringWithFormat:@"数据处理: %@",value];
+        
+        return [RACReturnSignal return:value];
+        //        return [RACReturnSignal return:value];
+        return nil;
+    }] subscribeNext:^(id  _Nullable x) {
+        
+        NSLog(@"%@",x);
+        
+    }];
     
+}
+
+#pragma mark -- map
+- (void)createRACmap
+{
     
+    //     map：映射，取到监听后的值，映射成一个新值，返回出去！！
+    [[[_ffField rac_textSignal] map:^id _Nullable(NSString * _Nullable value) {
+        
+        return @(value.length > 0);
+        
+    }] subscribeNext:^(id  _Nullable x) {
+        
+        self.ffView.hidden = [x boolValue];
+        
+    }];
+}
+
+
+#pragma mark -- reduce
+- (void)createRACreduce
+{
+    //    reduce：把元祖里的值分别都取出来，然后对这些值做一些操作，再合成一个值返回出去
+    RACSignal * signal = [_ffBtn rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [[RACSignal combineLatest:@[_ffField.rac_textSignal,signal] reduce:^id _Nullable(NSString * value){
+        return @(value.length>0);
+    }] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"%@",x);
+    }];
 }
 
 @end
