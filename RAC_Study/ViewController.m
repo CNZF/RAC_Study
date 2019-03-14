@@ -386,4 +386,72 @@ static  NSString * const fflabeltTextNotification = @"ff_Notification";
     }];
 }
 
+#pragma mark -- distinctUntilChanged
+- (void)createRACdistinctUntilChanged{
+    //    distinctUntilChanged：监听的值有明显变化时，才会发出信号
+    //    beginEdit 什么的信号都会屏蔽掉
+    [[[_ffField rac_textSignal] distinctUntilChanged] subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+}
+
+
+#pragma mark -- ignore
+- (void)createRACignore{
+    //    这个忽略的不是输入的3，而是field的内容为3的时候，忽略掉信号
+    [[[_ffField rac_textSignal] ignore:@"3"] subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+    
+}
+
+
+#pragma mark -- filter
+- (void)createRACfilter{
+    //    filter：过滤信号，return 满足条件的信号。
+    [[[_ffField rac_textSignal] filter:^BOOL(NSString * _Nullable value) {
+        return [value integerValue] % 2 == 0;
+    }] subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+}
+
+
+#pragma mark -- takeLast
+- (void)createRACtakeLast{
+    //    takeLast：取最后N次的信号,前提条件，订阅者必须调用完成，因为只有完成，就知道总共有多少信号，然后取最后N次的信号！！
+    RACSubject * subject = [RACSubject subject];
+    [[subject takeLast:1] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+    [subject sendNext:@"one"];
+    [subject sendNext:@"two"];
+    [subject sendNext:@"three"];
+    [subject sendCompleted];
+}
+
+
+#pragma mark -- take
+- (void)createRACtake
+{
+    //    take：从开始一共取N次的信号
+    //    你点击按钮的前三次，都会有打印，第四次开始就不会再打印了
+    RACSignal *signalBtn = [_ffBtn rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [[signalBtn take:3] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+}
+
+
+#pragma mark -- merge
+- (void)createRACmerge
+{
+    //    RAC merge 捆绑法。不分先后，谁事件调用打印谁
+    RACSignal * signal = [_ffBtn rac_signalForControlEvents:UIControlEventTouchUpInside];
+    
+    [[_ffField.rac_textSignal merge:signal] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+}
+
 @end
