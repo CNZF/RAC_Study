@@ -454,4 +454,59 @@ static  NSString * const fflabeltTextNotification = @"ff_Notification";
     }];
 }
 
+#pragma mark --zipWith
+- (void)createRACzipWith{
+    
+    //    zipWith：把两个信号压缩成一个信号，且必须两个信号都触发了（同次数），才会打印。两个信号的值，会合并成一个元组。
+    RACSignal *signalBtn = [_ffBtn rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [[[_ffField rac_textSignal] zipWith:signalBtn] subscribeNext:^(RACTwoTuple<NSString *,id> * _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+    
+}
+
+#pragma mark -- concat
+- (void)createRACconcat{
+    //    concat：按顺序拼接信号，按顺序接收信号，但是必须等上一个信号完成，下一个信号才有用！！！
+    //    signalTwo必须得是在x第一个信号调用sendConpleted之后
+    RACSignal *signalOne = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [subscriber sendNext:@"下载"];
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    RACSignal *signalTwo = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [subscriber sendNext:@"解压"];
+        return nil;
+    }];
+    [[signalOne concat:signalTwo] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"%@",x);
+        //先打印下载，后打印解压
+    }];
+    
+}
+
+
+#pragma mark -- then
+- (void)createRACthen{
+    //    concat：按顺序拼接信号，按顺序接收信号，但是必须等上一个信号完成，下一个信号才有用！！！
+    //    signalTwo必须得是在x第一个信号调用sendConpleted之后
+    RACSignal *signalOne = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [subscriber sendNext:@"下载"];
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    RACSignal *signalTwo = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [subscriber sendNext:@"解压"];
+        return nil;
+    }];
+    
+    [[signalOne then:^RACSignal * _Nonnull{
+        return signalTwo;
+    }] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+    
+    
+}
+
 @end
