@@ -509,4 +509,42 @@ static  NSString * const fflabeltTextNotification = @"ff_Notification";
     
 }
 
+#pragma mark -- switchToLatest
+- (void)createRACswitchToLatest
+{
+    //switchToLatest：用来接收信号发出的信号
+    RACSubject *Asignal = [RACSubject subject];
+    RACSubject *Bsignal = [RACSubject subject];
+    
+    [Asignal.switchToLatest subscribeNext:^(id x) {
+        //打印出 1
+        NSLog(@"%@",x);
+    }];
+    //A发送B
+    [Asignal sendNext:Bsignal];
+    //B发送 1
+    [Bsignal sendNext:@1];
+}
+
+#pragma mark --skip
+- (void)createRACskip{
+    //    skip：跳过前面N次信号
+    RACSignal *signalBtn = [_ffBtn rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [[signalBtn skip:3] subscribeNext:^(id  _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+    
+}
+
+#pragma mark --takeUntil
+- (void)createRACtakeUntil{
+    //    //知道d点击了按钮之后，更改内容就不会再打印了
+    //    takeUntil：直到某个信号触发，不再监听
+    RACSignal *signalBtn = [_ffBtn rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [[[_ffField rac_textSignal] takeUntil:signalBtn] subscribeNext:^(NSString * _Nullable x) {
+        NSLog(@"%@",x);
+    }];
+    
+}
+
 @end
